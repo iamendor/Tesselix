@@ -1,6 +1,6 @@
 #Compile
 CC = gcc
-CFLAGS = -Wall -Werror -fPIC -Iinclude
+CFLAGS = -Wall -Werror -fPIC -Iinclude  -fsanitize=address
 #Include, hogy a main leforduljon
 
 #Folders

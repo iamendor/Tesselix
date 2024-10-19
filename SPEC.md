@@ -1,65 +1,56 @@
 # Mátrixkezelő könyvtár
 
-#### Version: 0.1
+#### Version: 1.0
 
-A mátrixoknak széleskörű alkalmazási lehetőségei vannak, ilyen például többismeretlenes egyenletek reprezentálása és jóval egyszerűbb megoldása, de a mindennapi életben is szembefuthatnak velünk.
+A mátrixok széleskörű alkalmazási lehetőségekkel bírnak, például többismeretlenes egyenletek reprezentálására és megoldására. A könyvtár célja, hogy alapvető műveleteket hajtson végre mátrixokkal.
 
 # Specifikáció
 
-Készíts egy függvénykönyvtárat, amivel mátrixokat tudsz kezelni. A könyvtár képes legyen alapműveleteket elvégezni konstans számmal, valamint más mátrixokkal is.
+## Struktúra
 
-## Struktúra és kezelés
+Készíts egy struktúrát, amely tárolja a mátrix méreteit (szélesség és magasság) és a mátrixot egy kétdimenziós tömbben, valós számokkal.
 
-Készíts egy fő struktúrát, amiben tárolod a mátrix méreteit(szélesség, magasság), valamint magát a mátrixot, ami egy kétdimenziós tömb, valós számokkal feltöltve, és ezt is használdd.
+### Funkcionalitás
 
-Legyen egy külön függvény is, amivel létre tudsz hozni egy n\*n méretű egységmátrixot.
+1. **Mátrix Létrehozás:**
+   - Készíts egy függvényt, amivel betöltesz egy tömböt egy új struktúrába
+   - Készíts egy függvényt, ami létrehoz egy n\*n méretű egységmátrixot.
+   - Legyen lehetőség cellák frissítésére és mátrixok felszabadítására a memóriából
+   - Hozz létre függvényt, amivel másolni tudsz mátrixot.
+   - Készíts funkciót a mátrixok kiterjesztésére, üres sorok és oszlopok hozzáadásával
+   - Ennek az ellentétére is legyen alkalmas függvény
+2. **Alapműveletek:**
+   - Alapműveletek konstans és mátrixok között
+   - Valósíts meg konstanssal való szorzást.
+   - Implementálj egy mátrix-egyenlőség ellenőrző függvényt.
+3. **Mátrixok Műveletei:**
+   - Készíts egy függvényt két mátrix szorzására. Ellenőrizd az összeszorzás feltételeit (A oszlopainak száma = B sorainak száma).
+   - Implementáld két mátrix összeadását és kivonását, de csak egyező dimenziójú mátrixok esetén, máshogy nem értelmezhető
 
-A könyvtárban legyen olyan függvény, amivel létre tudsz hozni egy mátrixot egy tömbből dinamikus memóriakezeléssel, frissíteni tudsz egy-egy cellát, valamint felszabadítani a már nem szükséges mátrixokra, emellett legyen egy függvény, amivel másolni is tudsz egy mátrixot.
-
-## Alapműveletek
-
-A könyvtár tudjon konstans számot hozzáadni és kivonni a mátrixból, konstanssal tudjon szorozni, emellett legyen függvény arra is, hogy ellenőrizzük két mátrix egyenlőségét.
-
-## Műveletek mátrixok között
-
-Készíts egy függvényt, amivel két mátrixot össze tudsz szorozni. Fontos, hogy ellenőrizd a mátrixok összeszorzásának feltételét, ami:
-
-<aside>
-
-egy _n_ \* _k_ méretű **A** mátrixot akkor szorzhatjuk egy össze egy **B** mátrixxal, amennyiben *k*m\* méretű, vagyis az **A** mátrix oszlopainak száma meg kell egyezzen a **B** mátrix sorainak számával.
-
-</aside>
-
-Fontos azt is hozzátenni, hogy mátrixok szorzata valós számokkal ellentétben a **legtöbb esetben nem kommutatív**.
-
-A mátrixok **diadikus szorzata** mellett a **skaláris** szorzatát is legyen képes kiszámolni, ami a diadikus szorzatból létrejött mátrix főátlóin lévő valós számok összege.
-
-A mátrix szorzása mellett legyen lehetőség két mátrixot összeadni és kivonni egymásból, ezeket csak egyező dimenziójú mátrixokkal lehet megtenni, így fontos ezt ellenőrizni.
-
-## Haladó
+## Haladó Funkciók
 
 ### Gauss-elimináció
 
-A Gauss-eliminációval többismeretlenes egyenletrendszereket tudunk megoldani úgy, hogy az ismeretlenek együtthatóit egy oszlopba rendezzük, majd addig végzünk a sorokkal műveleteket, míg nem formáljuk át egy felsőháromszög mátrix formába, ezzel leegyszerűsítve a dolgunkat az egyenletrendszerrel.
+Implementálj egy Gauss-eliminációs algoritmust a többismeretlenes egyenletrendszerek megoldására.
 
-A Gauss-eliminációhoz szükséges, hogy a mátrix két oldalát össze tudjuk “forrasztani”, ez az úgynevezett “augmented matrix”. Hozz létre egy függvényt, amely létrehoz egy új mátrixot, amivel két mátrixot össze tud tenni egymás mellé.
-
-A Gauss-elimináció során a következő műveleteket végezhetjük soronként: nem nulla konstans számmal szorozhatunk, másik sor nem nulla konstans számmal való szorzatát hozzáadhatjuk, valamint felcserélhetünk két sort. **Fontos, hogy amennyiben a Gauss-elimináció során sort cserélünk, a determináns előjele változik**(páratlan számű sorcsere esetén). A műveleteket szervezd ki külön függvényekbe, a Gauss-elimináció függvénye pedig térjen vissza a sorcserék számával.
+- Készíts egy függvényt az “augmented matrix” létrehozására két mátrix összeforrasztásával.
+- Valósíts meg funkciókat a sorok szorzására, hozzáadására és cseréjére.
+- A függvény térjen vissza a sorcserék számával, fontos lehet determináns számolásnál
 
 ### Determináns
 
-Hozz létre egy függvényt, amivel determinánst tudsz számolni. Célszerű először Gauss-eliminációt alkalmazni, mivel ilyenkor a mátrix determinánsa egyszerűen a főátlón lévő számok szorzata
+Hozz létre egy függvényt, amely a mátrix determinánsát számolja, célszerűen a Gauss-eliminációs módszer alkalmazásával.
 
 ### Transzponálás
 
-A transzponálás egy viszonylag egyszerű, mégis fontos eleme a mátrixok kezelésének. Implementálj egy függvényt, ami ezt megteszi egy új mátrixot létrehozva.
+Implementálj egy függvényt, amely a mátrix transzponálását végzi el új mátrix létrehozásával.
 
-## I/O műveletek
+## I/O Műveletek
 
-A függvénykönyvtár tartalmazzon egy export függvényt, amivel ki tudsz exportálni egy tömbnyi, vagy egy darab mátrixot. A mátrixokat egy egy sorba írja ki egy fájlba, a sor tartalmazza a mátrix szélességét és magasságát.
+- Készíts egy exportáló függvényt, amely egy vagy több mátrixot ki tud írni egy fájlba, a mátrix legfontosabb jellemzőinek átlátható megjelenítésében.
+- Ahhoz, hogy értelme legyen az exportáló függvényünknek, vice versa, be is kell tudnunk importálni fájlból, implementálj egy függvényt ennek érdekében, ami térjen vissza egy mátrix tömbbel.
+- Implementálj egy függvényt a mátrixok standard kimenetre történő kiírására, jól látható formátumban. Az cellák mellett írja ki a mátrix szélességét és magasságát.
 
-Legyen emellett egy függvény, amivel ki tudsz íratni a standard kimenetre egy mátrixot jól látható formában.
+## Főprogram
 
----
-
-Végezetül hozz létre egy főprogramot, amelyben megmutatod a könyvtár adta lehetőségeket.
+Valósíts meg egy főprogramot, amely bemutatja a könyvtár funkcionalitását, példákkal illusztrálva az összes említett funkció használatát.

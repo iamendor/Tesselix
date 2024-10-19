@@ -1,4 +1,11 @@
 #ifndef TESSELIX_H
 #define TESSELIX_H
-void test();
+
+#include "debugmalloc.h"
+#include "struct.h"
+#include "crud.h"
+#include "io.h"
+#include "arithmetic.h"
+#include "advanced.h"
+
 #endif
