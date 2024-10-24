@@ -45,5 +45,19 @@ int main(){
     mtrxFree(mtrx3);
     mtrxFree(mtrx4);
 
+
+    file = fopen("test.txt", "r");
+    Matrix** target = NULL;
+    int len = mtrxImport(&target, file);
+
+    for(int i=0; i<len; i++){
+        mtrxPrint(target[i]);
+    }
+    for(int i=0; i<len; i++){
+        mtrxFree(target[i]);
+    }
+    free(target);
+    fclose(file);
+
     return 0;
 }

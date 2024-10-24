@@ -8,6 +8,6 @@
 void mtrxPrint(Matrix* mtrx);
 int mtrxExportArray(FILE* file, Matrix** mtrx, int size);
 int mtrxExport(FILE* file, Matrix* mtrx);
-Matrix** mtrxImport(FILE* file);
+int mtrxImport(Matrix*** target, FILE* file);
 
 #endif

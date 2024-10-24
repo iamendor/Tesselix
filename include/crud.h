@@ -10,7 +10,7 @@ Matrix* mtrxCreateIdentity(int n);
 Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2);
 Matrix* mtrxShrink(Matrix* mtrx, int h, int w);
 Matrix* mtrxExpand(Matrix *mtrx, int h, int w);
-int* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update); //TODO:  return the pointer of the cell
+double* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update); //TODO:  return the pointer of the cell
 bool mtrxCompare(Matrix* m1, Matrix* m2);
 
 void mtrxFree(Matrix* mtrx);

@@ -70,7 +70,7 @@ Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2){
 
 
 
-int* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update){
+double* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update){
     if(row > (mtrx->height) || col > (mtrx->width)) return NULL;
     mtrx->data[row-1][col-1] = update;
     return &(mtrx->data[row-1][col-1]);

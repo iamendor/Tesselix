@@ -306,6 +306,20 @@ fclose(file);
 */
 ```
 
+### <code>int mtrxImport(Matrix*\*\* target, FILE* file) </code>
+
+Ennek segítségével tudjuk importálni az általunk kiexportált mátrixokat egy fájlból. A függvény paraméterként kér egy **NULL** Matrix\*\*\* típust(A memóriacíme annak a tömbnek, amely mátrix pointereket tárol). **A fájlt nem zárja le a függvény**. A függvény megpróbál minden sorból beolvasni, de ha nem sikerül ugrik a következő sorra. A függvény a beolvasott mátrixok darabszámával tér vissza.
+
+```c
+Matrix** target = NULL;
+FILE* file = fopen("matrix.txt", "r");
+int len = mtrxImport(&target, file);
+
+for(int i=0; i<len; i++) mtrxPrint(target[i]);
+for(int i=0; i<len; i++) mtrxFree(target[i]);
+free(target);
+```
+
 ## Haladó
 
 ### <code>Matrix* mtrxTransponate(Matrix* source)</code>
