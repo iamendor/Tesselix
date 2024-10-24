@@ -31,7 +31,7 @@ typedef struct {
     int height;
     int width;
     double** data;
-}
+} Matrix;
 ```
 
 ## Függvények
@@ -41,8 +41,8 @@ typedef struct {
 [mtrxCreate](#matrix-mtrxcreateint-h-int-w-double-data) <br>
 [mtrxCreateAug](#matrix-mtrxcreateaugmatrix-s1-matrix-s2) <br>
 [mtrxCreateIdentity](#matrix-mtrxcreateidentityint-n) <br>
-[mtrxUpdateCell](#matrix-mtrxupdatecellmatrix-mtrx-int-row-col-double-update) <br>
-[mtrxCop](#matrix-mtrxcopymatrix-target-matrix-source)<br>
+[mtrxUpdateCell](#int-mtrxupdatecellmatrix-mtrx-int-row-col-double-update) <br>
+[mtrxCopy](#matrix-mtrxcopymatrix-target-matrix-source)<br>
 [mtrxShrink](#matrix-mtrxshrinkmatrix-mtrx-int-h-int-w)<br>
 [mtrxExpand](#matrix-mtrxexpandmatrix-mtrx-int-h-int-w)<br>
 [mtrxFree](#void-mtrxfreematrix-mtrx)<br>
@@ -109,7 +109,7 @@ Matrix* matrix = mtrxCreate(2, 2, tomb);
 Matrix* matrix2 = mtrxCreate(2, 3, tomb);
 Matrix* matrix3 = mtrxCreate(4, 1, tomb);
 Matrix* augmented = mtrxCreateAug(matrix, matrix2);
-Matrix* augmented2 = mtrxCreateAug(matrix, matrix2); // NULL
+Matrix* augmented2 = mtrxCreateAug(matrix, matrix3); // NULL
 
 /*
 / 1 2 | 1 2 3 \
@@ -119,9 +119,9 @@ Matrix* augmented2 = mtrxCreateAug(matrix, matrix2); // NULL
 
 ```
 
-### <code>Matrix* mtrxUpdateCell(Matrix* mtrx, int row, col, double update)</code>
+### <code>int* mtrxUpdateCell(Matrix* mtrx, int row, col, double update)</code>
 
-Frissíteni tudjuk a cellát a megadott pozícióban, ha túl lépne a mátrix határain, **NULL pointer**-t ad vissza. Az indexelés **1**-től keződik.
+Frissíteni tudjuk a cellát a megadott pozícióban, ha túl lépne a mátrix határain, **NULL pointer**-t ad vissza, egyébként a cella memóriacímét. Az indexelés **1**-től keződik.
 
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
@@ -168,7 +168,7 @@ Lényegében a <code>mtrxShrink</code> ellentettje, ugyanígy viselkedik, viszon
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
-mtrxShrink(matrix, 3, 3);
+mtrxExpand(matrix, 3, 3);
 mtrxPrint(matrix);
 /*
 / 1 2 0 \

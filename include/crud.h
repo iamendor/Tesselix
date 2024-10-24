@@ -8,10 +8,9 @@ Matrix* mtrxCreate(int h, int w, double* data);
 Matrix* mtrxCopy(Matrix* target, Matrix* source);
 Matrix* mtrxCreateIdentity(int n);
 Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2);
-Matrix* mtrxCreateNull(int h, int w);
 Matrix* mtrxShrink(Matrix* mtrx, int h, int w);
 Matrix* mtrxExpand(Matrix *mtrx, int h, int w);
-Matrix* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update);
+int* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update); //TODO:  return the pointer of the cell
 bool mtrxCompare(Matrix* m1, Matrix* m2);
 
 void mtrxFree(Matrix* mtrx);
