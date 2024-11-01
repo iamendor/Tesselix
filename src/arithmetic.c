@@ -1,5 +1,7 @@
 #include "debugmalloc.h"
 #include "arithmetic.h"
+#include "crud.h"
+#include <stdio.h>
 #include <stdbool.h>
 
 
@@ -62,4 +64,22 @@ Matrix* mtrxOpMtrx(Matrix* m1, char op, Matrix* m2){
         }
     }
     return m1;
+}
+
+Matrix* mtrxMultiplMtrx(Matrix* m1, Matrix* m2){
+    if(m1== NULL || m2 == NULL || m1->width != m2->height) return NULL;
+
+    Matrix* c = mtrxCreate(m1->height, m2->width, NULL);
+    if(c == NULL) return NULL;
+
+    for(int i=0; i<c->height; i++){
+        for(int j=0; j<c->width; j++){
+            // c[i][j] = summa(k=1 => n, m1[i][k] * m2[k][j]), n= m1 szélesség
+            for(int k=0; k<m1->width; k++){
+                c->data[i][j] += m1->data[i][k] * m2->data[k][j];
+            }
+        }
+    }
+
+    return c;
 }

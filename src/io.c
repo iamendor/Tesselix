@@ -6,6 +6,8 @@
 #include <string.h>
 
 void mtrxPrint(Matrix* mtrx){
+    if(mtrx == NULL) return;
+    printf("\n");
     for(int i=0; i<mtrx->height; i++){
         if(mtrx->height != 1){
             if(i == 0) printf("/");

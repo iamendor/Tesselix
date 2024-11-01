@@ -46,8 +46,8 @@ Matrix* mtrxCreateIdentity(int n){
     return mtrx;
 }
 
-// 2D -> 1D: index = row*k + col (k = oszlopok száma)
 Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2){
+    // 2D -> 1D: index = row*k + col (k = oszlopok száma)
     if(s1 == NULL || s2 == NULL || s1->height != s2->height) return NULL;
 
     int augWidth = s1->width + s2->width;
@@ -102,7 +102,7 @@ Matrix* mtrxShrink(Matrix* mtrx, int h, int w){
         if(mtrx->data[i] == NULL) return NULL;
     }
     //Sorok
-    for(int i=(mtrx->height)-1; i>=w-1; i--){
+    for(int i=(mtrx->height)-1; i>=h; i--){
         free(mtrx->data[i]);
     }
     mtrx->width = w;
@@ -117,7 +117,10 @@ Matrix* mtrxExpand(Matrix *mtrx, int h, int w){
     //Oszlopbővítés
     for(int i=0; i<mtrx->height; i++){
         mtrx->data[i] = (double*)realloc(mtrx->data[i], w * sizeof(double));
-        if(mtrx->data[i] == NULL) return NULL;
+        if(mtrx->data[i] == NULL) {
+            mtrxFree(mtrx);
+            return NULL;
+        }
         for(int j=mtrx->width; j<w; j++){
             mtrx->data[i][j] = 0;
         }
