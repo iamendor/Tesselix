@@ -7,18 +7,21 @@
 
 void mtrxPrint(Matrix* mtrx){
     for(int i=0; i<mtrx->height; i++){
-        
-        if(i == 0 && mtrx->height != 1) printf("/");
-        else if(i==mtrx->height -1 &&  mtrx->height != 1) printf("\\");
-        else printf("|");
+        if(mtrx->height != 1){
+            if(i == 0) printf("/");
+            else if(i == mtrx->height -1) printf("\\");
+            else printf("|");   
+        }  else printf("|");
 
         for(int j=0; j<mtrx->width; j++){
-            printf(" %.2f ", mtrx->data[i][j]);
+            printf("%6.2f ", mtrx->data[i][j]);
         }
+        if(mtrx->height != 1){
+            if(i == 0)printf("\\");
+            else if(i == mtrx->height -1) printf("/ %dx%d", mtrx->height, mtrx->width);
+            else printf("|");
 
-        if(i == 0 && mtrx->height != 1) printf("\\");
-        else if(i == mtrx->height -1 && mtrx->height != 1) printf("/ %dx%d", mtrx->height, mtrx->width);
-        else if(mtrx->height == 1) printf("| %dx%d", mtrx->height, mtrx->width);
+        }else if(mtrx->height == 1) printf("| %dx%d", mtrx->height, mtrx->width);
         else printf("|");
 
         printf("\n");
@@ -64,8 +67,7 @@ int mtrxImport(Matrix*** target, FILE* file){
     int MIN_LEN = 10 + 1; // 1x1 mátrix tárolási minimum ('\0' karakterekre, '\n' nem tárolom)
     char* line = (char*)malloc(MIN_LEN * sizeof(char));
     char ch;
-    int n = 0; // hány chart scanneltem
-    int matrixN = 0; // hány mátrixot scanneltem
+    int n = 0, matrixN = 0; // hány chart scanneltem // hány mátrixot scanneltem
     *target = (Matrix**)malloc(sizeof(Matrix*));
 
     while((ch = fgetc(file)) != -1){
@@ -84,8 +86,6 @@ int mtrxImport(Matrix*** target, FILE* file){
                 double* arr = (double*)malloc(cLen * sizeof(double));
                 int index = 6; // String index
                 while(sscanf(line+index, "%lf", &(arr[scanned])) == 1 && scanned < cLen){
-                    //printf("%d.: %s  %d %d\n", scanned+1, line+index, scanned, cLen);
-                    //printf("Scanned %.2f\n", arr[scanned]);
                     scanned++;
                     index += 5;
                 }
@@ -102,7 +102,6 @@ int mtrxImport(Matrix*** target, FILE* file){
                 free(arr);
             }
 
-            //printf("%s\n", line);
             free(line);
             line = (char*) malloc(MIN_LEN * sizeof(char));
             n = 0;

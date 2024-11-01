@@ -1,3 +1,4 @@
+#include "debugmalloc.h"
 #include "advanced.h"
 #include "crud.h"
 
@@ -15,3 +16,36 @@ Matrix* mtrxTransponate(Matrix* source){
 
     return mtrx;
 };
+
+Matrix* mtrxSwapRow(Matrix* source, int r1, int r2){
+    if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
+    if(r1 == r2) return source;
+
+    double* temp = source->data[r1-1];
+    source->data[r1-1] = source->data[r2-1];
+    source->data[r2-1] = temp;
+
+    return source;
+}
+
+
+Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2){
+    if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
+    if(r1 == r2) return source;
+
+    for(int i=0; i<source->width; i++){
+        source->data[r1-1][i] += a * source->data[r2-1][i];
+    }
+
+    return source;
+}
+
+Matrix* mtrxMultiplRow(Matrix* source, double a, int r){
+    if(source == NULL || r < 1 || r > source->height) return NULL;
+
+    for(int i=0; i<source->width; i++){
+        source->data[r-1][i] *= a; 
+    }
+
+    return source;
+}

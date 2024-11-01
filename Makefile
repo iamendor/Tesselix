@@ -41,4 +41,4 @@ $(BIN_DIR)/$(EXEC_NAME): main.c $(LIB_DIR)/$(LIB_NAME)
 
 #Clean
 clean:
-	rm -rf $(OBJ_DIR) $(LIB_DIR)/*.a $(BIN_DIR)/$(EXEC_NAME)
+	rm -rf $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)

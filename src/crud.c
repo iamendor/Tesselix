@@ -2,7 +2,7 @@
 #include "crud.h"
 #include <stdlib.h>
 
-Matrix *mtrxCreate(int h, int w, double* data){
+Matrix* mtrxCreate(int h, int w, double* data){
     Matrix* mtrx = (Matrix*) malloc(sizeof(Matrix));
     if(mtrx == NULL) return NULL;
     
@@ -30,7 +30,7 @@ Matrix *mtrxCreate(int h, int w, double* data){
     return mtrx;
 };
 
-Matrix *mtrxCreateIdentity(int n){
+Matrix* mtrxCreateIdentity(int n){
     double* data = (double*)calloc(n*n, sizeof(double));
     if(!data) return NULL;
 
@@ -93,8 +93,8 @@ Matrix* mtrxCopy(Matrix* target, Matrix* source){
 }
 
 Matrix* mtrxShrink(Matrix* mtrx, int h, int w){
-   if((mtrx->height == h && mtrx->width == w) || \
-        (mtrx->height < h) || (mtrx->width < w) || mtrx == NULL) return NULL;
+   if(mtrx == NULL || (mtrx->height == h && mtrx->width == w) || \
+        (mtrx->height < h) || (mtrx->width < w)) return NULL;
 
     //Először az oszlopokat
     for(int i=0; i<mtrx->height; i++){
@@ -111,8 +111,8 @@ Matrix* mtrxShrink(Matrix* mtrx, int h, int w){
 }
 
 Matrix* mtrxExpand(Matrix *mtrx, int h, int w){
-    if((mtrx->height == h && mtrx->width == w) || \
-        (mtrx->height > h) || (mtrx->width > w) || mtrx == NULL) return NULL;
+    if(mtrx == NULL || (mtrx->height == h && mtrx->width == w) || \
+        (mtrx->height > h) || (mtrx->width > w)) return NULL;
 
     //Oszlopbővítés
     for(int i=0; i<mtrx->height; i++){

@@ -37,6 +37,8 @@ Implementálj egy Gauss-eliminációs algoritmust a többismeretlenes egyenletre
 - Valósíts meg funkciókat a sorok szorzására, hozzáadására és cseréjére.
 - A függvény térjen vissza a sorcserék számával, fontos lehet determináns számolásnál
 
+<div style="page-break-after: always;"></div>
+
 ### Determináns
 
 Hozz létre egy függvényt, amely a mátrix determinánsát számolja, célszerűen a Gauss-eliminációs módszer alkalmazásával.

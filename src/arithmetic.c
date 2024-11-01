@@ -3,8 +3,11 @@
 #include <stdbool.h>
 
 
+static bool validOperation(char op) { return op == '+' || op == '-' || op == '*' || op == '/'; };
+
 Matrix* mtrxOp(double alpha, char op, Matrix* mtrx){
     if(mtrx == NULL) return NULL;
+    if(!validOperation(op)) return mtrx;
     for(int i=0; i<mtrx->height; i++){
         for(int j=0; j<mtrx->width; j++){
             switch(op){

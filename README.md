@@ -34,6 +34,8 @@ typedef struct {
 } Matrix;
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Függvények
 
 ### [Létrehozás, olvasás, frissítés](#létrehozás-olvasás-frissítés)
@@ -52,7 +54,7 @@ typedef struct {
 
 [mtrxCompare](#bool-mtrxcomparematrix-m1-matrix-m2) <br>
 [mtrxOp](#matrix-mtrxopdouble-alpha-char-op-matrix-mtrx) <br>
-[mtrxOp](#matrix-mtrxopmtrxmatrix-m1-matrix-m2) <br>
+[mtrxOpMtrx](#matrix-mtrxopmtrxmatrix-m1-matrix-m2) <br>
 
 ### [I/O](#io)
 
@@ -63,6 +65,11 @@ typedef struct {
 ### [Haladó](#haladó)
 
 [mtrxTransponate](#matrix-mtrxtransponatematrix-source)<br>
+[mtrxSwapRow](#matrix-mtrxswaprowmatrix-source-int-r1-int-r2)<br>
+[mtrxAddRow](#matrix-mtrxaddrowmatrix-source-int-r1-double-a-int-r2)<br>
+[mtrxMultiplRow](#matrix-mtrxmultiplrowmatrix-source-double-a-int-r)<br>
+
+<div style="page-break-after: always;"></div>
 
 ## Létrehozás, olvasás, frissítés
 
@@ -97,6 +104,8 @@ Matrix* identity = mtrxCreateIdentity(2);
     [0, 1] ]
 */
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### <code>Matrix* mtrxCreateAug(Matrix* s1, Matrix\* s2)</code>
 
@@ -141,11 +150,11 @@ Matrix* trgtMtrx;
 
 mtrxCopy(trgtMtrx, matrix);
 mtrxPrint(trgtMtrx);
-/*
-/ 1 2 \
-\ 3 4 / 2x2
-*/
+/*  / 1 2 \
+    \ 3 4 / 2x2  */
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### <code>Matrix* mtrxShrink(Matrix* mtrx, int h, int w)</code>
 
@@ -156,9 +165,7 @@ double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
 mtrxShrink(matrix, 1, 2);
 mtrxPrint(matrix);
-/*
-| 1 2 | 1x2
-*/
+/* | 1 2 | 1x2 */
 ```
 
 ### <code>Matrix* mtrxExpand(Matrix* mtrx, int h, int w)</code>
@@ -191,6 +198,8 @@ int main(void){
     return 0;
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### <code>int mtrxToArray(double\*\* target, Matrix\_ source)</code>
 
@@ -233,6 +242,8 @@ mtrxOp(2, '.', matrix); // matrix[i][j] -= 2
 mtrxOp(2, '*', matrix); // matrix[i][j] *= 2
 mtrxOp(2, '/', matrix); // matrix[i][j] /= 2
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### <code>Matrix* mtrxOpMtrx(Matrix* m1, Matrix\* m2)</code>
 
@@ -282,6 +293,8 @@ mtrxExport(file, matrix);
 fclose(file);
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### <code>int mtrxExportArray(FILE \*file, Matrix\*\* mtrx, int size)</code>
 
 Kiexportálhatunk egy tömb mátrixot a megadott fájlba. Visszatérési értéke a a kiexportált mátrixok száma. A függvény **nem zárja le a fájlt**!
@@ -320,6 +333,8 @@ for(int i=0; i<len; i++) mtrxFree(target[i]);
 free(target);
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Haladó
 
 ### <code>Matrix* mtrxTransponate(Matrix* source)</code>
@@ -338,4 +353,47 @@ mtrxPrint(transponated);
 */
 ```
 
-###
+### <code>Matrix* mtrxSwapRow(Matrix* source, int r1, int r2)</code>
+
+Megcserél két sort a mátrixban. Ez leginkább a Gauss-eliminációhoz szükséges, de ha esetleg valamilyen új algoritmust építenénk, akkor adott a lehetőség ezzel a függvénnyel is. A sorszámozás **1**-től kezdődik. **NULL**-al tér vissza hibás bemenet esetén.
+
+```c
+double tomb[4] = { 1, 2, 3, 4 };
+Matrix* matrix = mtrxCreate(2, 2, tomb);
+mtrxSwapRow(matrix, 1, 2);
+mtrxPrint(matrix);
+/* Output:
+/ 3 4 \
+\ 1 2 / 2x2 */
+```
+
+### <code>Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2)</code>
+
+Hozzáadjuk az **r1** sorhoz az **r2** **a**-szorosát. Ez is a Gauss-eliminációhoz szükséges(és determináns számoláshoz). A sorszámozás **1**-től kezdődik. **NULL**-al tér vissza hibás bemenet esetén(nem létező sor).
+
+```c
+double tomb[4] = { 1, 2, 3, 4 };
+Matrix* matrix = mtrxCreate(2, 2, tomb);
+mtrxAddRow(matrix, 2, -3, 1); // sor2 = sor2 + (-3) * sor1
+mtrxPrint(matrix);
+/* Output:
+/ 1  2 \
+\ 0 -2 / 2x2 */
+```
+
+<div style="page-break-after: always;"></div>
+
+### <code>Matrix* mtrxMultiplRow(Matrix* source, double a, int r)</code>
+
+Egy sort szorzunk **"a"** skalárral. Gauss-elimináció egyik alaplépése. **NULL**-al tér vissza hibás bemenet esetén.
+
+```c
+double tomb[4] = { 1, 2, 3, 4 };
+Matrix* matrix = mtrxCreate(2, 2, tomb);
+mtrxSwapRow(matrix, 1, 2);
+mtrxMultiplRow(matrix, (double)1/3, 1);
+mtrxPrint(matrix);
+/* Output:
+/ 1.00  1.33 \
+\ 1.00  2.00 / 2x2 */
+```
