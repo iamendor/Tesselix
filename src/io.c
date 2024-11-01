@@ -4,7 +4,7 @@
 #include "crud.h"
 #include <stdio.h>
 #include <string.h>
-
+// Print matrix
 void mtrxPrint(Matrix* mtrx){
     if(mtrx == NULL) return;
     printf("\n");
@@ -29,7 +29,7 @@ void mtrxPrint(Matrix* mtrx){
         printf("\n");
     }
 }
-
+//Export array of matrixes into file
 int mtrxExportArray(FILE *file, Matrix** mtrx, int size){
     int inserted = 0;
     if(file == NULL) return false;
@@ -45,7 +45,7 @@ int mtrxExportArray(FILE *file, Matrix** mtrx, int size){
     }
     return inserted;
 };
-
+//Export matrix into file
 int mtrxExport(FILE* file, Matrix* mtrx){
     if(mtrx == NULL || file == NULL) return 0;
 
@@ -64,6 +64,8 @@ int mtrxExport(FILE* file, Matrix* mtrx){
     return 1;
 
 }
+
+//Import from file into target
 int mtrxImport(Matrix*** target, FILE* file){
     if(file == NULL) return -1;
     int MIN_LEN = 10 + 1; // 1x1 mátrix tárolási minimum ('\0' karakterekre, '\n' nem tárolom)

@@ -2,6 +2,7 @@
 #include "crud.h"
 #include <stdlib.h>
 
+// Create h*w sized matrix filled with data
 Matrix* mtrxCreate(int h, int w, double* data){
     Matrix* mtrx = (Matrix*) malloc(sizeof(Matrix));
     if(mtrx == NULL) return NULL;
@@ -29,7 +30,7 @@ Matrix* mtrxCreate(int h, int w, double* data){
     }
     return mtrx;
 };
-
+// Create n*n identity matrix
 Matrix* mtrxCreateIdentity(int n){
     double* data = (double*)calloc(n*n, sizeof(double));
     if(!data) return NULL;
@@ -45,7 +46,7 @@ Matrix* mtrxCreateIdentity(int n){
 
     return mtrx;
 }
-
+//Create augmented matrix from s1 and s2
 Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2){
     // 2D -> 1D: index = row*k + col (k = oszlopok száma)
     if(s1 == NULL || s2 == NULL || s1->height != s2->height) return NULL;
@@ -69,13 +70,13 @@ Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2){
 };
 
 
-
+// Update cell in mtrx
 double* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update){
     if(row > (mtrx->height) || col > (mtrx->width)) return NULL;
     mtrx->data[row-1][col-1] = update;
     return &(mtrx->data[row-1][col-1]);
 }
-
+// Copy matrix to target from source
 Matrix* mtrxCopy(Matrix* target, Matrix* source){
     if(source == NULL) return NULL;
 
@@ -91,7 +92,7 @@ Matrix* mtrxCopy(Matrix* target, Matrix* source){
     
     return target;
 }
-
+//Shrink matrix from right bottom corner
 Matrix* mtrxShrink(Matrix* mtrx, int h, int w){
    if(mtrx == NULL || (mtrx->height == h && mtrx->width == w) || \
         (mtrx->height < h) || (mtrx->width < w)) return NULL;
@@ -109,7 +110,7 @@ Matrix* mtrxShrink(Matrix* mtrx, int h, int w){
     mtrx->height = h;
     return mtrx;
 }
-
+//Expand matrix from right bottom corner
 Matrix* mtrxExpand(Matrix *mtrx, int h, int w){
     if(mtrx == NULL || (mtrx->height == h && mtrx->width == w) || \
         (mtrx->height > h) || (mtrx->width > w)) return NULL;
@@ -142,7 +143,7 @@ Matrix* mtrxExpand(Matrix *mtrx, int h, int w){
     return mtrx;
 }
 
-
+// Free your matrix
 void mtrxFree(Matrix* mtrx){
     if(mtrx == NULL) return;
 
@@ -152,7 +153,7 @@ void mtrxFree(Matrix* mtrx){
     free(mtrx->data);
     free(mtrx);
 }
-
+// Convert matrix to array into target, return len
 int mtrxToArray(double** target, Matrix* source){
     if(source == NULL) return -1;
 

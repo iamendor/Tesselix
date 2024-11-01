@@ -2,7 +2,7 @@
 #include "advanced.h"
 #include "crud.h"
 
-
+//Transponate matrix
 Matrix* mtrxTransponate(Matrix* source){
     if(source == NULL) return NULL;
     Matrix* mtrx = mtrxCreate(source->width, source->height, NULL);
@@ -16,7 +16,7 @@ Matrix* mtrxTransponate(Matrix* source){
 
     return mtrx;
 };
-
+//Swap two row inside matrix
 Matrix* mtrxSwapRow(Matrix* source, int r1, int r2){
     if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
     if(r1 == r2) return source;
@@ -28,7 +28,7 @@ Matrix* mtrxSwapRow(Matrix* source, int r1, int r2){
     return source;
 }
 
-
+//Add a tight of a seriesof scalars to another row
 Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2){
     if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
     if(r1 == r2) return source;
@@ -40,6 +40,7 @@ Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2){
     return source;
 }
 
+//Multiply row with a constant
 Matrix* mtrxMultiplRow(Matrix* source, double a, int r){
     if(source == NULL || r < 1 || r > source->height) return NULL;
 

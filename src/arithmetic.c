@@ -7,6 +7,7 @@
 
 static bool validOperation(char op) { return op == '+' || op == '-' || op == '*' || op == '/'; };
 
+//Operate on matrix with constant, available operations: '+', '-', '*', '/'
 Matrix* mtrxOp(double alpha, char op, Matrix* mtrx){
     if(mtrx == NULL) return NULL;
     if(!validOperation(op)) return mtrx;
@@ -32,7 +33,7 @@ Matrix* mtrxOp(double alpha, char op, Matrix* mtrx){
     }
     return mtrx;
 };
-
+//Compare two matrixes
 bool mtrxCompare(Matrix* m1, Matrix* m2){
     if(m1 == NULL || m2 == NULL ||\
         m1->height != m2->height ||\
@@ -46,7 +47,7 @@ bool mtrxCompare(Matrix* m1, Matrix* m2){
 
     return true;
 }
-
+// Add or substract matrix from each other
 Matrix* mtrxOpMtrx(Matrix* m1, char op, Matrix* m2){
     if(m1->width != m2->width || m1->height != m2->height || m1 == m2) return NULL;
     for(int i=0; i<m1->height; i++){
@@ -65,7 +66,7 @@ Matrix* mtrxOpMtrx(Matrix* m1, char op, Matrix* m2){
     }
     return m1;
 }
-
+// Multiply two matrix together
 Matrix* mtrxMultiplMtrx(Matrix* m1, Matrix* m2){
     if(m1== NULL || m2 == NULL || m1->width != m2->height) return NULL;
 
