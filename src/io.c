@@ -65,19 +65,21 @@ int mtrxExport(FILE* file, Matrix* mtrx){
 
 }
 
-//Import from file into target
-int mtrxImport(Matrix*** target, FILE* file){
-    if(file == NULL) return -1;
+//Import from file
+Matrix** mtrxImport(FILE* file){
+    if(file == NULL) return NULL;
+
     int MIN_LEN = 10 + 1; // 1x1 mátrix tárolási minimum ('\0' karakterekre, '\n' nem tárolom)
-    char* line = (char*)malloc(MIN_LEN * sizeof(char));
     char ch;
     int n = 0, matrixN = 0; // hány chart scanneltem // hány mátrixot scanneltem
-    *target = (Matrix**)malloc(sizeof(Matrix*));
+    int initCap = 2;
+    char* line = (char*)malloc(MIN_LEN * sizeof(char));
+    Matrix** target = (Matrix**)malloc(initCap*sizeof(Matrix*));
 
     while((ch = fgetc(file)) != -1){
         if(n >= MIN_LEN) {
             line = (char*)realloc(line, (n+1)*sizeof(char));
-            if(line == NULL) return -1;
+            if(line == NULL) return NULL;
         }
         if(ch == '\n'){
             line[n] = '\0';
@@ -98,10 +100,11 @@ int mtrxImport(Matrix*** target, FILE* file){
                 Matrix* mtrx = mtrxCreate(h, w, arr);
                 if(mtrx == NULL) continue; //Nem sikerült létrehozni a mátrixot
                 if(matrixN != 0){
-                     *target = (Matrix**)realloc(*target, (matrixN+1)*sizeof(Matrix*));
-                     if(*target == NULL) return -1;
+                    target = (Matrix**)realloc(target, (initCap+matrixN+1)*sizeof(Matrix*));
+                    if(target == NULL) return NULL;
                 }
-                (*target)[matrixN++] = mtrx;
+            
+                target[matrixN++] = mtrx;
 
                 free(arr);
             }
@@ -111,6 +114,8 @@ int mtrxImport(Matrix*** target, FILE* file){
             n = 0;
         }else line[n++] = ch;
     }
+    target[matrixN] = NULL;
+
     free(line);
-    return matrixN;
+    return target;
 };

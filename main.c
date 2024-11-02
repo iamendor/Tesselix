@@ -4,7 +4,7 @@
 
 
 int main(){
-    Matrix *mtrx1, *mtrx2 = NULL, *mtrx3, *identity, *augmented;
+    Matrix *mtrx1, *mtrx2 = NULL, *mtrx3, *identity, *augmented, **import;
     FILE* fp;
     int success;
 
@@ -139,15 +139,15 @@ int main(){
 
     printf("\nMátrix importálás\n");
     fp = fopen("mtrxExport2.txt", "r");
-    Matrix** import;
-    success = mtrxImport(&import, fp);
-    printf("%s\n", success == 3 ? "Sikeres importálás": "Sikertelen!");
+    import =  mtrxImport(fp);
+    if(import != NULL)printf("Sikeres importálás\n");
+    else printf("Hiba az importálássál\n");
 
-    for(int i=0; i<success; i++) mtrxPrint(import[i]);
+    for(int i=0; import[i] != NULL; i++) mtrxPrint(import[i]);
 
-    for(int i=0; i<success; i++) mtrxFree(import[i]);
-    fclose(fp);
+    for(int i=0; import[i] != NULL; i++) mtrxFree(import[i]);
     free(import);
+    fclose(fp);
 
     // Advanced
     printf("\nTranszponálás\n");
