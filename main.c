@@ -11,6 +11,7 @@ int main(){
     double a1[6] = {1, 0, 2, -1, 3, 1};
     double a2[6] = {3, 1, 2, 1, -1, 0};
     double a3[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    double a4[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
 
 
     //CRUD
@@ -173,6 +174,24 @@ int main(){
 
     mtrxFree(mtrx2);
     mtrxFree(mtrx1);
+
+    printf("\nGauss-elimináció");
+    mtrx1 = mtrxCreate(3, 3, a4);
+    printf("\nEredeti:");
+    mtrxPrint(mtrx1);
+    printf("\nMódosított:");
+    mtrxGaussElim(mtrx1);
+    mtrxPrint(mtrx1);
+    mtrxFree(mtrx1);
+
+    printf("\nDetermináns");
+    mtrx1 = mtrxCreate(3, 3, a4);
+    mtrxPrint(mtrx1);
+    double det1 = mtrxDeterminant(mtrx1);
+    printf("A mátrix determinánsa: %.2f", det1);
+    mtrxFree(mtrx1);
+
+
    
     return 0;
 }

@@ -7,13 +7,27 @@ Egy mátrix kezelő könyvtár C nyelven.
 ### Könyvtár
 
 ```
-make
+> make
+```
+
+vagy
+
+```
+> gcc -c -Iinclude src/*.c
 ```
 
 ### Bemutató program
 
 ```
-make bin/main
+> make bin/main
+```
+
+vagy
+
+```
+> gcc -c -Iinclude src/*.c
+> gcc -c main.c
+> gcc -o bin/main *.o
 ```
 
 ### Importálás
@@ -21,6 +35,8 @@ make bin/main
 ```c
 #include "tesselix.h"
 ```
+
+<div style="page-break-after: always;"></div>
 
 ## Struktúra
 
@@ -33,8 +49,6 @@ typedef struct {
     double** data;
 } Matrix;
 ```
-
-<div style="page-break-after: always;"></div>
 
 ## Függvények
 
@@ -55,6 +69,7 @@ typedef struct {
 [mtrxCompare](#bool-mtrxcomparematrix-m1-matrix-m2) <br>
 [mtrxOp](#matrix-mtrxopdouble-alpha-char-op-matrix-mtrx) <br>
 [mtrxOpMtrx](#matrix-mtrxopmtrxmatrix-m1-matrix-m2) <br>
+[mtrxMultiplMtrx](#matrix-mtrxmultiplmtrxmatrix-m1-matrix-m2)
 
 ### [I/O](#io)
 
@@ -68,6 +83,8 @@ typedef struct {
 [mtrxSwapRow](#matrix-mtrxswaprowmatrix-source-int-r1-int-r2)<br>
 [mtrxAddRow](#matrix-mtrxaddrowmatrix-source-int-r1-double-a-int-r2)<br>
 [mtrxMultiplRow](#matrix-mtrxmultiplrowmatrix-source-double-a-int-r)<br>
+[mtrxGaussElim](#double-mtrxgausselimmatrix-mtrx)<br>
+[mtrxDeterminant](#double-mtrxdeterminantmatrix-mtrx)
 
 <div style="page-break-after: always;"></div>
 
@@ -75,7 +92,7 @@ typedef struct {
 
 ### <code>Matrix\* mtrxCreate(int h, int w, double\* data)</code>
 
-Létrehozunk egy mátrixot egy _h \* w_ hosszú tömbből, feltételezzük, hogy legalább ekkora a tömb. Az adatokat soronként töltjük fel. Ha a megadott dimenzióknál több érték van a tömbben, nem fognak megjelenni a mátrixban. A visszatérési érték a **mátrixra mutató pointer**, a többi függvény is így tér vissza. Ha **NULL**-t helyettesítünk a tömb helyére, a mátrixot 0-val fogja feltölteni.
+Létrehozunk egy mátrixot egy _h \* w_ hosszú tömbből, feltételezzük, hogy legalább ekkora a tömb. Az adatokat soronként töltjük fel. Ha a megadott dimenzióknál több érték van a tömbben, nem fognak megjelenni a mátrixban. A visszatérési érték a **mátrixra mutató pointer**. Ha **NULL**-t helyettesítünk a tömb helyére, a mátrixot 0-val fogja feltölteni.
 
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
@@ -238,7 +255,7 @@ Konstans számmal és mátrixxal való műveletre alkalmas függvény. Az átado
 double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
 mtrxOp(2, '+', matrix); // matrix[i][j] += 2 minden elemre
-mtrxOp(2, '.', matrix); // matrix[i][j] -= 2
+mtrxOp(2, '-', matrix); // matrix[i][j] -= 2
 mtrxOp(2, '*', matrix); // matrix[i][j] *= 2
 mtrxOp(2, '/', matrix); // matrix[i][j] /= 2
 ```
@@ -254,8 +271,25 @@ double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
 Matrix* matrix2 = mtrxCreate(2, 2, tomb);
 mtrxOpMtrx(matrix, '+', matrix2); // matrix[i][j] += matrix2[i][j]
-mtrxOpMtrx(matrix, '.', matrix2); // matrix[i][j] -= matrix2[i][j]
+mtrxOpMtrx(matrix, '-', matrix2); // matrix[i][j] -= matrix2[i][j]
 ```
+
+### <code>Matrix* mtrxMultiplMtrx(Matrix* m1, Matrix\* m2)</code>
+
+Ha **A** mátrix oszlopainak száma megegyezik a **B** mátrix sorainak számával, akkor a két mátrixot össze tudjuk szorozni a következő képlet alapján:<br>
+<code> c[i][j] = summa(k=1 -> n, m1[i][k] \* m2[k][j] )<br> n == (**A** mátrix oszlopainak száma / **B** mátrix sorainak száma) </code>
+A függvény az új mátrix pointerével tér vissza, bármi hiba esetén **NULL**
+
+```c
+double a1[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+double a2[6] = {1, 2, 3, 4, 5, 6};
+Matrix* mtrx1 = mtrxCreate(3, 3, a1);
+Matrix* mtrx2 = mtrxCreate(3, 2, a2);
+Matrix* multi1 = mtrxMultiplMtrx(mtrx1, mtrx2); // Valid
+Matrix* multi2 = mtrxMultiplMtrx(mtrx2, mtrx1); // NULL
+```
+
+<div style="page-break-after: always;"></div>
 
 ## I/O
 
@@ -369,7 +403,7 @@ mtrxPrint(matrix);
 
 ### <code>Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2)</code>
 
-Hozzáadjuk az **r1** sorhoz az **r2** **a**-szorosát. Ez is a Gauss-eliminációhoz szükséges(és determináns számoláshoz). A sorszámozás **1**-től kezdődik. **NULL**-al tér vissza hibás bemenet esetén(nem létező sor).
+Hozzáadjuk az **r1** sorhoz az **r2** **a**-szorosát. Ez is a Gauss-eliminációhoz szükséges. A sorszámozás **1**-től kezdődik. **NULL**-al tér vissza hibás bemenet esetén(nem létező sor).
 
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
@@ -396,4 +430,33 @@ mtrxPrint(matrix);
 /* Output:
 / 1.00  1.33 \
 \ 1.00  2.00 / 2x2 */
+```
+
+### <code>double mtrxGaussElim(Matrix\* mtrx)</code>
+
+A Gauss-elimináció segítségével egyszerűen meg tudunk oldani egy többismeretlenes egyenletrendszert. Bemenetként csak a mátrix szükséges, és helyben végzi el a műveletet. Visszatérési értéke a sorcserék száma.
+
+```c
+double tomb[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
+Matrix* matrix = mtrxCreate(3, 3, tomb);
+double rowSwaps = mtrxGaussElim(matrix);
+mtrxPrint(matrix);
+printf("Sorcserék száma: %d", rowSwaps);
+
+/* /  1.00  -1.00   1.00 \
+   |  0.00   1.00   1.50 |
+   \  0.00   0.00   1.00 / 3x3
+   Sorcserék száma: 1      */
+```
+
+### <code>double mtrxDeterminant(Matrix\* mtrx)</code>
+
+Ennek segítségével tudjuk meghatározni, hogy az egyenletrendszerünk megoldható-e. Ha a determináns **nem 0**, akkor megoldható az egyenletrendszerünk. Bemenetként csak a mátrix szükséges. A függvény **nem változtatja meg az eredeti mátrix értékét.** Maga az algoritmus a Gauss-elimináció vázát használja fel, viszont készít egy másolatot a mátrixról a függvényen belül, hogy csak azt csinálja a függvény, ami műveletet hivatott elvégezni.<br>
+
+```c
+double tomb[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
+Matrix* matrix = mtrxCreate(3, 3, tomb);
+double detMatrix = mtrxDeterminant(matrix);
+printf("A mátrix determinánsa: %.2f", detMatrix);
+/* Ouptut: 'A mátrix determinánsa: -1.00' */
 ```
