@@ -1,5 +1,4 @@
 #include "debugmalloc.h"
-
 #include "io.h"
 #include "crud.h"
 #include <stdio.h>
@@ -25,6 +24,7 @@ void mtrxPrint(Matrix* mtrx){
 
         }else if(mtrx->height == 1) printf("| %dx%d", mtrx->height, mtrx->width);
         else printf("|");
+
 
         printf("\n");
     }

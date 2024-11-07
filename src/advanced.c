@@ -1,6 +1,7 @@
 #include "debugmalloc.h"
 #include "advanced.h"
 #include "crud.h"
+#include "io.h"
 #include <stdio.h>
 
 //Transponate matrix
@@ -87,33 +88,41 @@ double mtrxGaussElim(Matrix* mtrx){
 
 // A Gauss-elimináció algoritmusa néhány funkcióval kiegészítve
 double mtrxDeterminant(Matrix* mtrx){
+    if(mtrx == NULL) {return -1;}
+
     Matrix* copy = NULL;
-    mtrxCopy(copy, mtrx);
+
+    copy = mtrxCopy(copy, mtrx);
+
     double D = 1;
-    double** data = copy->data;
     int i = 0, j = 0; // i=sor, j=oszlop
 
     while(i < copy->height){
-        if(data[i][j] != 0){
-            mtrxMultiplRow(copy, (double)1/data[i][j], i+1);
-            D *= data[i][j];
+        if(copy->data[i][j] != 0){
+            mtrxMultiplRow(copy, (double)1/copy->data[i][j], i+1);
+            D *= copy->data[i][j];
             if(i < copy->width){
                 int t=i+1; 
                 while(t < copy->height){
-                    mtrxAddRow(mtrx, t+1, -data[t][j], i+1);
+
+                    mtrxAddRow(mtrx, t+1, -copy->data[t][j], i+1);
                     t++;
                 }
 
                 if(i == copy->height -1 || j == copy->width -1) break;
                 i++; j++;
+
             }
+
         }else{
+
             int t=i+1;
-            while(i<copy->height && data[t][j] != 0){
+            while(i<copy->height && copy->data[t][j] != 0){
                 mtrxSwapRow(mtrx, i+1, t+1);
                 D *= -1;
             }
         }
+
         
     }
     mtrxFree(copy);

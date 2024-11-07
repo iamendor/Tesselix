@@ -1,6 +1,7 @@
 #include "debugmalloc.h"
 #include "crud.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 // Create h*w sized matrix filled with data
 Matrix* mtrxCreate(int h, int w, double* data){
@@ -79,6 +80,8 @@ double* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update){
 // Copy matrix to target from source
 Matrix* mtrxCopy(Matrix* target, Matrix* source){
     if(source == NULL) return NULL;
+    if(target != NULL) mtrxFree(target);
+
 
     double *toArray = NULL;
 
@@ -87,7 +90,6 @@ Matrix* mtrxCopy(Matrix* target, Matrix* source){
 
     target = mtrxCreate(source->height, source->width, toArray);
     if(target == NULL) return NULL;
-
     free(toArray);
     
     return target;
