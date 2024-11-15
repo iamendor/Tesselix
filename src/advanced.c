@@ -2,6 +2,7 @@
 #include "advanced.h"
 #include "crud.h"
 #include "io.h"
+#include "util.h"
 #include <stdio.h>
 
 //Transponate matrix
@@ -17,7 +18,8 @@ Matrix* mtrxTransponate(Matrix* source){
     }
 
     return mtrx;
-};
+}
+
 //Swap two row inside matrix
 Matrix* mtrxSwapRow(Matrix* source, int r1, int r2){
     if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
@@ -30,7 +32,7 @@ Matrix* mtrxSwapRow(Matrix* source, int r1, int r2){
     return source;
 }
 
-//Add a tight of a seriesof scalars to another row
+//Add a tight of a series of scalars to another row
 Matrix* mtrxAddRow(Matrix* source, int r1, double a, int r2){
     if(source == NULL || r1 < 1 || r2 < 1 || r1 > source->height || r2> source->height) return NULL;
     if(r1 == r2) return source;
@@ -60,71 +62,77 @@ double mtrxGaussElim(Matrix* mtrx){
     int rowSwap = 0;
 
     while(i < mtrx->height){
-        if(data[i][j] != 0){
-            mtrxMultiplRow(mtrx, (double)1/data[i][j], i+1);
-            if(i < mtrx->width){
-                int t=i+1; 
-                while(t < mtrx->height){
-                    mtrxAddRow(mtrx, t+1, -data[t][j], i+1);
-                    t++;
-                }
+      if(!equal(data[i][j], 0)){
+        mtrxMultiplRow(mtrx, (double)1/(data[i][j]), i+1);
 
-                if(i == mtrx->height -1 || j == mtrx->width -1) break;
-                i++; j++;
-            }
-        }else{
-            for(int t=i+1; i<mtrx->height; t++){
-                if(data[t][j] != 0) {
-                    rowSwap++;
-                    mtrxSwapRow(mtrx, i+1, t+1);
-                    break;
-                }
+        if(i+1 < mtrx->height){
+            for(int t=i+1; t<mtrx->height; t++){
+                mtrxAddRow(mtrx, t+1, -data[t][j], i+1);
             }
         }
-        
+
+        if(i+1 == mtrx->width || j+1 == mtrx->height) break;
+        i++; j++;
+      }else{
+        if(i+1 < mtrx->height){
+            int t = i+1;
+            while(t+1 < mtrx->height){
+                t++;
+            }
+            if(!equal(data[t][j], 0)){
+                mtrxSwapRow(mtrx, i+1, t+1);
+                rowSwap++;
+                continue;
+            }else{
+                if(j+1 == mtrx->width){
+                    i--;
+                    break;
+                }else j++;
+            }
+        }
+      }
     }
     return rowSwap;
-};
+}
 
 // A Gauss-elimináció algoritmusa néhány funkcióval kiegészítve
 double mtrxDeterminant(Matrix* mtrx){
-    if(mtrx == NULL) {return -1;}
+    if(mtrx->width != mtrx->height) return 0;
+    Matrix* copy = mtrxCopy(mtrx);
+    if(copy == NULL) return 0;
 
-    Matrix* copy = NULL;
-
-    copy = mtrxCopy(copy, mtrx);
-
+    double** data = copy->data;
+    int i = 0; // i=sor
     double D = 1;
-    int i = 0, j = 0; // i=sor, j=oszlop
 
     while(i < copy->height){
-        if(copy->data[i][j] != 0){
-            mtrxMultiplRow(copy, (double)1/copy->data[i][j], i+1);
-            D *= copy->data[i][j];
-            if(i < copy->width){
-                int t=i+1; 
-                while(t < copy->height){
+        double ok = data[i][i];
+      if(!equal(ok, 0)){
+        mtrxMultiplRow(copy, (double)1/(data[i][i]), i+1);
+        D *= data[i][i];
 
-                    mtrxAddRow(mtrx, t+1, -copy->data[t][j], i+1);
-                    t++;
-                }
-
-                if(i == copy->height -1 || j == copy->width -1) break;
-                i++; j++;
-
-            }
-
-        }else{
-
-            int t=i+1;
-            while(i<copy->height && copy->data[t][j] != 0){
-                mtrxSwapRow(mtrx, i+1, t+1);
-                D *= -1;
+        if(i+1 < copy->height){
+            for(int t=i+1; t<copy->height; t++){
+                mtrxAddRow(copy, t+1, -data[t][i], i+1);
             }
         }
 
-        
+        if(i+1 == copy->width) break;
+        i++;
+      }else{
+        if(i+1 < copy->height){
+            int t = i+1;
+            while(t+1 < copy->height){
+                t++;
+            }
+            if(!equal(data[t][i], 0)){
+                mtrxSwapRow(copy, i+1, t+1);
+                continue;
+            }else return 0;
+        }
+      }
     }
     mtrxFree(copy);
+
     return D;
-};
+}

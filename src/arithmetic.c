@@ -1,11 +1,13 @@
 #include "debugmalloc.h"
+#include "math.h"
 #include "arithmetic.h"
 #include "crud.h"
+#include "util.h"
 #include <stdio.h>
 #include <stdbool.h>
 
 
-static bool validOperation(char op) { return op == '+' || op == '-' || op == '*' || op == '/'; };
+static bool validOperation(char op) { return op == '+' || op == '-' || op == '*' || op == '/'; }
 
 //Operate on matrix with constant, available operations: '+', '-', '*', '/'
 Matrix* mtrxOp(double alpha, char op, Matrix* mtrx){
@@ -32,7 +34,8 @@ Matrix* mtrxOp(double alpha, char op, Matrix* mtrx){
         }
     }
     return mtrx;
-};
+}
+
 //Compare two matrixes
 bool mtrxCompare(Matrix* m1, Matrix* m2){
     if(m1 == NULL || m2 == NULL ||\
@@ -41,7 +44,7 @@ bool mtrxCompare(Matrix* m1, Matrix* m2){
     
     for(int i=0; i<m1->height; i++){
         for(int j=0; j<m1->width; j++){
-            if(m1->data[i][j] != m2->data[i][j]) return false;
+            if(!equal(m1->data[i][j], m2->data[i][j])) return false;
         }
     }
 

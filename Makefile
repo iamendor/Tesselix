@@ -1,6 +1,6 @@
 #Compile
 CC = gcc
-CFLAGS = -Wall -Werror -fPIC -Iinclude  -fsanitize=address
+CFLAGS = -Wall -Werror -fPIC -Iinclude -g #-Wextra -Wfloat-equal -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wformat=2 -Wunreachable-code -pedantic
 #Include, hogy a main leforduljon
 
 #Folders

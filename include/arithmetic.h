@@ -1,5 +1,6 @@
 #ifndef ARITHMETIC_H
 #define ARITHMETIC_H
+#include <stdbool.h>
 #include "debugmalloc.h"
 #include "struct.h"
 

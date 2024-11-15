@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 Matrix* mtrxCreate(int h, int w, double* data);
-Matrix* mtrxCopy(Matrix* target, Matrix* source);
+Matrix* mtrxCopy(Matrix* source);
 Matrix* mtrxCreateIdentity(int n);
 Matrix* mtrxCreateAug(Matrix* s1, Matrix* s2);
 Matrix* mtrxShrink(Matrix* mtrx, int h, int w);

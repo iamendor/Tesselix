@@ -156,16 +156,16 @@ mtrxUpdateCell(matrix, 5,1, 2.5); // NULL
 mtrxUpdateCell(matrix, 1,1, 2.5); // [ [2.5, 2], [3, 4] ]
 ```
 
-### <code>Matrix* mtrxCopy(Matrix* target, Matrix\* source)</code>
+### <code>Matrix\* mtrxCopy(Matrix\* source)</code>
 
-Átmásolja a mátrixot egy másik memóriacímre. Visszatér a **target**-el, ha sikeres volt a művelet, ellenkező esetben **NULL**.
+Átmásolja a mátrixot egy másik memóriacímre. Visszatér az új mátrix memóriacímével, ha sikeres volt a művelet, ellenkező esetben **NULL**.
 
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
-Matrix* trgtMtrx;
+Matrix* trgtMtrx = NULL;
 
-mtrxCopy(trgtMtrx, matrix);
+trgtMtrx = mtrxCopy(matrix);
 mtrxPrint(trgtMtrx);
 /*  / 1 2 \
     \ 3 4 / 2x2  */

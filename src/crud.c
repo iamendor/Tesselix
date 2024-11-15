@@ -78,10 +78,9 @@ double* mtrxUpdateCell(Matrix* mtrx, int row, int col, double update){
     return &(mtrx->data[row-1][col-1]);
 }
 // Copy matrix to target from source
-Matrix* mtrxCopy(Matrix* target, Matrix* source){
+Matrix* mtrxCopy(Matrix* source){
     if(source == NULL) return NULL;
-    if(target != NULL) mtrxFree(target);
-
+    Matrix* target = NULL;
 
     double *toArray = NULL;
 
