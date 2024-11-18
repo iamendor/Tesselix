@@ -163,9 +163,7 @@ mtrxUpdateCell(matrix, 1,1, 2.5); // [ [2.5, 2], [3, 4] ]
 ```c
 double tomb[4] = { 1, 2, 3, 4 };
 Matrix* matrix = mtrxCreate(2, 2, tomb);
-Matrix* trgtMtrx = NULL;
-
-trgtMtrx = mtrxCopy(matrix);
+Matrix* trgtMtrx = mtrxCopy(matrix);
 mtrxPrint(trgtMtrx);
 /*  / 1 2 \
     \ 3 4 / 2x2  */
@@ -353,7 +351,7 @@ fclose(file);
 */
 ```
 
-### <code>int mtrxImport(Matrix*\*\* target, FILE* file) </code>
+### <code>Matrix\*\* mtrxImport(FILE\_ file) </code>
 
 Ennek segítségével tudjuk importálni az általunk kiexportált mátrixokat egy fájlból. A függvény paramétere egy fájl pointer. **A fájlt nem zárja le a függvény**. A függvény megpróbál minden sorból beolvasni, de ha nem sikerül ugrik a következő sorra. Egy végjeles listát fog visszaadni a függvény.
 
