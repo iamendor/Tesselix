@@ -432,19 +432,18 @@ mtrxPrint(matrix);
 
 ### <code>double mtrxGaussElim(Matrix\* mtrx)</code>
 
-A Gauss-elimináció segítségével egyszerűen meg tudunk oldani egy többismeretlenes egyenletrendszert. Bemenetként csak a mátrix szükséges, és helyben végzi el a műveletet. Visszatérési értéke a sorcserék száma.
+A Gauss-elimináció segítségével egyszerűen meg tudunk oldani egy többismeretlenes egyenletrendszert. Bemenetként csak a kibővített együttható mátrix szükséges, helyben végzi el a műveletet. A kibővített együttható mátrixot létre tudjuk hozni a <code>mtrxCreateAugmented</code> függvénnyel. Eliminálja a nulla sorokat, ellenőrzi, ha tilos sor jönne létre, ekkor a visszatérési értéke -1(és bármi más hiba esetén), egyébként a sorcserék száma. A megoldást a vezéregyesekből az utolsó oszlopból tudjuk kiolvasni, a megfelelő vezéregyeshez. Készítettem egy <code>gauss.c</code> fájlt, amelyben néhány mátrixal elvégzi az algoritmust, ezeket mind külső programmal ellenőriztem is, kommentelve a megoldásokkal.
 
 ```c
-double tomb[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
-Matrix* matrix = mtrxCreate(3, 3, tomb);
+double tomb[9] ={ 2, 1, 5,  4, 3, 11 };
+Matrix* matrix = mtrxCreate(2, 3, tomb);
 double rowSwaps = mtrxGaussElim(matrix);
 mtrxPrint(matrix);
 printf("Sorcserék száma: %d", rowSwaps);
 
-/* /  1.00  -1.00   1.00 \
-   |  0.00   1.00   1.50 |
-   \  0.00   0.00   1.00 / 3x3
-   Sorcserék száma: 1      */
+/* /  1.00   0.00   2.00 \
+   \  0.00   1.00   1.00 / 3x3
+   Sorcserék száma: 0      */
 ```
 
 ### <code>double mtrxDeterminant(Matrix\* mtrx)</code>

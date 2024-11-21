@@ -10,13 +10,15 @@ void divider() {
 
 int main(){
     Matrix *mtrx1, *mtrx2 = NULL, *mtrx3, *identity, *augmented, **import;
+    double rowSwap;
     FILE* fp;
     int success;
 
     double a1[6] = {1, 0, 2, -1, 3, 1};
     double a2[6] = {3, 1, 2, 1, -1, 0};
     double a3[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    double a4[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
+    double a4[6] = {2, 1, 5, 4, 3, 11};
+    double a5[12] = {0, 2, 3, 1, -1, 1, 2, 1, 4, 1, 3, 4};
     
 
     //CRUD
@@ -199,9 +201,21 @@ int main(){
     mtrx1 = mtrxCreate(3, 3, a4);
     printf("Eredeti:");
     mtrxPrint(mtrx1);
-    printf("\nMódosított:");
-    mtrxGaussElim(mtrx1);
+    printf("\nMódosított: ");
+    rowSwap = mtrxGaussElim(mtrx1);
+    if(rowSwap == -1) printf("TILOS SOR!\n");
+    else mtrxPrint(mtrx1);
+    mtrxFree(mtrx1);
+
+    divider();
+    printf("Gauss-elimináció pt. 2\n");
+    mtrx1 = mtrxCreate(3, 4, a5);
+    printf("Eredeti: ");
     mtrxPrint(mtrx1);
+    printf("\nMódosított:");
+    rowSwap = mtrxGaussElim(mtrx1);
+    if(rowSwap == -1) printf("TILOS SOR!\n");
+    else mtrxPrint(mtrx1);
     mtrxFree(mtrx1);
 
     divider();

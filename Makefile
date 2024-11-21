@@ -13,6 +13,7 @@ OBJ_DIR = obj
 #Main bin
 EXEC_NAME = main
 EXAMPLE_NAME = example
+GAUSS_NAME = gauss
 
 #Configure 
 LIB_NAME = libtesselix.a
@@ -36,14 +37,18 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #main.c
-$(BIN_DIR)/$(EXEC_NAME): main.c $(LIB_DIR)/$(LIB_NAME)
+$(EXEC_NAME): main.c $(LIB_DIR)/$(LIB_NAME)
 	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -L$(LIB_DIR) -ltesselix -o $(BIN_DIR)/$(EXEC_NAME)  main.c
 
 #example.c
-$(BIN_DIR)/$(EXAMPLE_NAME): example.c $(LIB_DIR)/$(LIB_NAME)
+$(EXAMPLE_NAME): example.c $(LIB_DIR)/$(LIB_NAME)
 	mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -L$(LIB_DIR) -ltesselix -o $(BIN_DIR)/$(EXAMPLE_NAME)  example.c
+
+$(GAUSS_NAME): example.c $(LIB_DIR)/$(LIB_NAME)
+	mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) -L$(LIB_DIR) -ltesselix -o $(BIN_DIR)/$(GAUSS_NAME)  gauss.c
 
 #Clean
 clean:

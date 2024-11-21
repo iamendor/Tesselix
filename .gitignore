@@ -4,5 +4,6 @@ lib/
 .vscode
 *.txt
 *.pdf
+.DS_Store
 *.o
 *.zip

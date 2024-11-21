@@ -55,42 +55,67 @@ Matrix* mtrxMultiplRow(Matrix* source, double a, int r){
     return source;
 }
 
+
+
+
 // Szeszlér Dávid Bsz1 jegyzete alapján készített algoritmus
 double mtrxGaussElim(Matrix* mtrx){
+
     double** data = mtrx->data;
     int i = 0, j = 0; // i=sor, j=oszlop
     int rowSwap = 0;
 
-    while(i < mtrx->height){
-      if(!equal(data[i][j], 0)){
-        mtrxMultiplRow(mtrx, (double)1/(data[i][j]), i+1);
+    // 1. fázis
+    while(i < mtrx->height && j+1 < mtrx->width){
+        if(!equal(data[i][j], 0)){
+            mtrxMultiplRow(mtrx, (double)1/(data[i][j]), i+1);
+            if(i+1 < mtrx->height){
+                for(int t=i+1; t<mtrx->height; t++){
+                    mtrxAddRow(mtrx, t+1, -data[t][j], i+1);
 
-        if(i+1 < mtrx->height){
-            for(int t=i+1; t<mtrx->height; t++){
-                mtrxAddRow(mtrx, t+1, -data[t][j], i+1);
-            }
-        }
+                    // Tilos sor ellenőrzés
+                    bool isVarNotZero=false;
+                    
+                    for(int k=0; k<mtrx->width-1; k++){
+                        if(data[t][k] != 0){
+                            isVarNotZero = true;
+                            break;
+                        }
+                    }
+                    if(!isVarNotZero && data[t][mtrx->width-1] != 0) return -1; //TILOS SOR!!
+                    if(!isVarNotZero && data[t][mtrx->width-1] == 0) { //Nulla sor
+                        mtrxSwapRow(mtrx, t+1, mtrx->height);
+                        mtrxShrink(mtrx, mtrx->height -1, mtrx->width);
 
-        if(i+1 == mtrx->width || j+1 == mtrx->height) break;
-        i++; j++;
-      }else{
-        if(i+1 < mtrx->height){
-            int t = i+1;
-            while(t+1 < mtrx->height){
-                t++;
+
+                        //Ezzel újra végig fut ugyanazzal a sorral, hogy mindenképpen ne legyen hiba,
+                        //és ne maradjon nem nulla a vezéregyes alatt
+                        i--; j--;
+                        break;
+                    }
+                }
             }
-            if(!equal(data[t][j], 0)){
-                mtrxSwapRow(mtrx, i+1, t+1);
-                rowSwap++;
-                continue;
-            }else{
-                if(j+1 == mtrx->width){
-                    i--;
-                    break;
+            i++; j++;
+        }else{
+            if(i+1 < mtrx->height){
+                int t = i+1;
+                while(t+1 < mtrx->height && equal(data[t][j], 0)) t++; //Keresem az első sort, aminek a j. eleme nem nulla
+
+                if(!equal(data[t][j], 0)){
+                    mtrxSwapRow(mtrx, i+1, t+1);
+
+                    rowSwap++;
+                    continue;
                 }else j++;
             }
         }
-      }
+    }
+
+    //2. fázis: redukált lépcsős alak
+    for(i = mtrx->height -1, j = mtrx->width -2; i>=0 && j >= 0; j--, i--){
+        for(int t=i-1; t>=0; t--){
+            mtrxAddRow(mtrx, t+1, -data[t][j], j+1);
+        }
     }
     return rowSwap;
 }
@@ -106,10 +131,10 @@ double mtrxDeterminant(Matrix* mtrx){
     double D = 1;
 
     while(i < copy->height){
-        double ok = data[i][i];
-      if(!equal(ok, 0)){
-        mtrxMultiplRow(copy, (double)1/(data[i][i]), i+1);
-        D *= data[i][i];
+        double pivot = data[i][i];
+      if(!equal(pivot, 0)){
+        mtrxMultiplRow(copy, (double)1/(pivot), i+1);
+        D *= pivot;
 
         if(i+1 < copy->height){
             for(int t=i+1; t<copy->height; t++){
@@ -126,6 +151,7 @@ double mtrxDeterminant(Matrix* mtrx){
                 t++;
             }
             if(!equal(data[t][i], 0)){
+                D *= -1;
                 mtrxSwapRow(copy, i+1, t+1);
                 continue;
             }else return 0;
