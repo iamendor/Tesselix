@@ -339,7 +339,7 @@ Matrix* matrix = mtrxCreate(2, 2, tomb);
 Matrix* matrix2 = mtrxCreate(1, 2, tomb2);
 Matrix* matrix3 = mtrxCreate(3, 3, tomb3);
 
-Matrix* matrixTomb[3] = {matrix, matrix2, ma}
+Matrix* matrixTomb[3] = {matrix, matrix2, matrix3};
 FILE* file = fopen("mtrx.txt", "w");
 mtrxExportArray(file, matrixTomb, 3);
 fclose(file);
@@ -432,7 +432,7 @@ mtrxPrint(matrix);
 
 ### <code>double mtrxGaussElim(Matrix\* mtrx)</code>
 
-A Gauss-elimináció segítségével egyszerűen meg tudunk oldani egy többismeretlenes egyenletrendszert. Bemenetként csak a kibővített együttható mátrix szükséges, helyben végzi el a műveletet. A kibővített együttható mátrixot létre tudjuk hozni a <code>mtrxCreateAugmented</code> függvénnyel. Eliminálja a nulla sorokat, ellenőrzi, ha tilos sor jönne létre, ekkor a visszatérési értéke -1(és bármi más hiba esetén), egyébként a sorcserék száma. A megoldást a vezéregyesekből az utolsó oszlopból tudjuk kiolvasni, a megfelelő vezéregyeshez. Készítettem egy <code>gauss.c</code> fájlt, amelyben néhány mátrixal elvégzi az algoritmust, ezeket mind külső programmal ellenőriztem is, kommentelve a megoldásokkal.
+A Gauss-elimináció segítségével egyszerűen meg tudunk oldani egy többismeretlenes egyenletrendszert. Bemenetként csak a kibővített együttható mátrix szükséges, helyben végzi el a műveletet. A kibővített együttható mátrixot létre tudjuk hozni a <code>mtrxCreateAugmented</code> függvénnyel. Eliminálja a nulla sorokat, ellenőrzi, ha tilos sor jönne létre, ekkor a visszatérési értéke -1(és bármi más hiba esetén), egyébként a sorcserék száma. A megoldást az utolsó oszlopból tudjuk kiolvasni, a megfelelő vezéregyeshez. Készítettem egy <code>gauss.c</code> fájlt, amelyben néhány mátrixal elvégzi az algoritmust, ezeket mind külső programmal ellenőriztem is, kommentelve a megoldásokkal.
 
 ```c
 double tomb[9] ={ 2, 1, 5,  4, 3, 11 };
@@ -446,9 +446,11 @@ printf("Sorcserék száma: %d", rowSwaps);
    Sorcserék száma: 0      */
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### <code>double mtrxDeterminant(Matrix\* mtrx)</code>
 
-Ennek segítségével tudjuk meghatározni, hogy az egyenletrendszerünk megoldható-e. Ha a determináns **nem 0**, akkor megoldható az egyenletrendszerünk. Bemenetként csak a mátrix szükséges. A függvény **nem változtatja meg az eredeti mátrix értékét.** Maga az algoritmus a Gauss-elimináció vázát használja fel, viszont készít egy másolatot a mátrixról a függvényen belül, hogy csak azt csinálja a függvény, ami műveletet hivatott elvégezni.<br>
+Ennek segítségével tudjuk meghatározni, hogy az egyenletrendszerünk megoldható-e. Ha a determináns **nem 0**, akkor egyértelműen megoldható az egyenletrendszerünk. Bemenetként csak a mátrix szükséges. A függvény **nem változtatja meg az eredeti mátrix értékét.** Maga az algoritmus a Gauss-elimináció vázát használja fel, viszont készít egy másolatot a mátrixról a függvényen belül, hogy csak azt csinálja a függvény, ami műveletet hivatott elvégezni.<br>
 
 ```c
 double tomb[9] = {0, 2, 3, 1, -1, 1, 2, 1, 4};
